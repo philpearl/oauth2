@@ -455,6 +455,11 @@ func providerAuthHeaderWorks(tokenURL string) bool {
 		}
 	}
 
+	// Shopify has shop-specific urls
+	if strings.Contains(tokenURL, ".myshopify.com") {
+		return false
+	}
+
 	// Assume the provider implements the spec properly
 	// otherwise. We can add more exceptions as they're
 	// discovered. We will _not_ be adding configurable hooks
