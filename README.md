@@ -1,19 +1,21 @@
 # OAuth2 for Go
 
-[![Build Status](https://travis-ci.org/golang/oauth2.svg?branch=master)](https://travis-ci.org/golang/oauth2)
+[![Build Status](https://travis-ci.org/philpearl/oauth2.svg?branch=master)](https://travis-ci.org/philpearl/oauth2)
 
 oauth2 package contains a client implementation for OAuth 2.0 spec.
+
+This is a fork of golang.org/x/oauth2 that is happier to work with "broken" server implementations without requiring code updates.
 
 ## Installation
 
 ~~~~
-go get golang.org/x/oauth2
+go get github.com/philpearl/oauth2
 ~~~~
 
 See godoc for further documentation and examples.
 
-* [godoc.org/golang.org/x/oauth2](http://godoc.org/golang.org/x/oauth2)
-* [godoc.org/golang.org/x/oauth2/google](http://godoc.org/golang.org/x/oauth2/google)
+* [godoc.org/github.com/philpearl/oauth2](http://godoc.org/github.com/philpearl/oauth2)
+* [godoc.org/github.com/philpearl/oauth2/google](http://godoc.org/github.com/philpearl/oauth2/google)
 
 
 ## App Engine
@@ -40,8 +42,8 @@ with the `oauth2` package.
 
 	import (
 		"golang.org/x/net/context"
-		"golang.org/x/oauth2"
-		"golang.org/x/oauth2/google"
+		"github.com/philpearl/oauth2"
+		"github.com/philpearl/oauth2/google"
 		newappengine "google.golang.org/appengine"
 		newurlftech "google.golang.org/urlfetch"
 
