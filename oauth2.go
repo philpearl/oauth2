@@ -65,9 +65,9 @@ type TokenSource interface {
 type Endpoint struct {
 	AuthURL  string
 	TokenURL string
-	// BrokenAuthHeader signals a particular common server irregularity when retrieving tokens.
-	// If this is set then the client secret is send as a client_secret parameter on the POST
-	// and basic auth is not used.
+	// BrokenAuthHeader signals a particular common server irregularity when
+	// retrieving tokens.  If this is set then the client secret is sent as a
+	// client_secret parameter on the POST and basic auth is not used.
 	BrokenAuthHeader bool
 }
 
