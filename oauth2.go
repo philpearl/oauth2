@@ -63,8 +63,9 @@ type TokenSource interface {
 // Endpoint contains the OAuth 2.0 provider's authorization and token
 // endpoint URLs.
 type Endpoint struct {
-	AuthURL  string
-	TokenURL string
+	AuthURL          string
+	TokenURL         string
+	BrokenAuthHeader bool
 }
 
 var (
@@ -305,8 +306,7 @@ func retrieveToken(ctx context.Context, c *Config, v url.Values) (*Token, error)
 		return nil, err
 	}
 	v.Set("client_id", c.ClientID)
-	bustedAuth := !providerAuthHeaderWorks(c.Endpoint.TokenURL)
-	if bustedAuth && c.ClientSecret != "" {
+	if c.Endpoint.BrokenAuthHeader && c.ClientSecret != "" {
 		v.Set("client_secret", c.ClientSecret)
 	}
 	req, err := http.NewRequest("POST", c.Endpoint.TokenURL, strings.NewReader(v.Encode()))
@@ -314,7 +314,7 @@ func retrieveToken(ctx context.Context, c *Config, v url.Values) (*Token, error)
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	if !bustedAuth {
+	if !c.Endpoint.BrokenAuthHeader {
 		req.SetBasicAuth(c.ClientID, c.ClientSecret)
 	}
 	r, err := hc.Do(req)
@@ -420,51 +420,20 @@ func condVal(v string) []string {
 	return []string{v}
 }
 
+// This is the old list of broken providers.  These should now use the new field in Endpoint
 var brokenAuthHeaderProviders = []string{
-	"https://accounts.google.com/",
 	"https://www.googleapis.com/",
-	"https://github.com/",
 	"https://api.instagram.com/",
 	"https://www.douban.com/",
 	"https://api.dropbox.com/",
 	"https://api.soundcloud.com/",
-	"https://www.linkedin.com/",
 	"https://api.twitch.tv/",
 	"https://oauth.vk.com/",
-	"https://api.odnoklassniki.ru/",
 	"https://connect.stripe.com/",
 	"https://api.pushbullet.com/",
 	"https://oauth.sandbox.trainingpeaks.com/",
 	"https://oauth.trainingpeaks.com/",
 	"https://www.strava.com/oauth/",
-}
-
-// providerAuthHeaderWorks reports whether the OAuth2 server identified by the tokenURL
-// implements the OAuth2 spec correctly
-// See https://code.google.com/p/goauth2/issues/detail?id=31 for background.
-// In summary:
-// - Reddit only accepts client secret in the Authorization header
-// - Dropbox accepts either it in URL param or Auth header, but not both.
-// - Google only accepts URL param (not spec compliant?), not Auth header
-// - Stripe only accepts client secret in Auth header with Bearer method, not Basic
-func providerAuthHeaderWorks(tokenURL string) bool {
-	for _, s := range brokenAuthHeaderProviders {
-		if strings.HasPrefix(tokenURL, s) {
-			// Some sites fail to implement the OAuth2 spec fully.
-			return false
-		}
-	}
-
-	// Shopify has shop-specific urls
-	if strings.Contains(tokenURL, ".myshopify.com") {
-		return false
-	}
-
-	// Assume the provider implements the spec properly
-	// otherwise. We can add more exceptions as they're
-	// discovered. We will _not_ be adding configurable hooks
-	// to this package to let users select server bugs.
-	return true
 }
 
 // HTTPClient is the context key to use with golang.org/x/net/context's
