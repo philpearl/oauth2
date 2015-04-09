@@ -6,7 +6,7 @@
 package odnoklassniki // import "golang.org/x/oauth2/odnoklassniki"
 
 import (
-	"golang.org/x/oauth2"
+	"github.com/philpearl/oauth2"
 )
 
 // Endpoint is Odnoklassniki's OAuth 2.0 endpoint.

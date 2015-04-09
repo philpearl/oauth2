@@ -6,7 +6,7 @@
 package paypal // import "golang.org/x/oauth2/paypal"
 
 import (
-	"golang.org/x/oauth2"
+	"github.com/philpearl/oauth2"
 )
 
 // Endpoint is PayPal's OAuth 2.0 endpoint in live (production) environment.

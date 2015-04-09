@@ -6,7 +6,7 @@
 package vk // import "golang.org/x/oauth2/vk"
 
 import (
-	"golang.org/x/oauth2"
+	"github.com/philpearl/oauth2"
 )
 
 // Endpoint is VK's OAuth 2.0 endpoint.

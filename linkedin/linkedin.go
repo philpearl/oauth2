@@ -6,7 +6,7 @@
 package linkedin // import "golang.org/x/oauth2/linkedin"
 
 import (
-	"golang.org/x/oauth2"
+	"github.com/philpearl/oauth2"
 )
 
 // Endpoint is LinkedIn's OAuth 2.0 endpoint.
