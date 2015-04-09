@@ -269,8 +269,9 @@ func TestExchangeRequest_NonBasicAuth(t *testing.T) {
 	conf := &Config{
 		ClientID: "CLIENT_ID",
 		Endpoint: Endpoint{
-			AuthURL:  "https://accounts.google.com/auth",
-			TokenURL: "https://accounts.google.com/token",
+			AuthURL:          "https://accounts.google.com/auth",
+			TokenURL:         "https://accounts.google.com/token",
+			BrokenAuthHeader: true,
 		},
 	}
 
@@ -419,21 +420,4 @@ func TestConfigClientWithToken(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-}
-
-func Test_providerAuthHeaderWorks(t *testing.T) {
-	for _, p := range brokenAuthHeaderProviders {
-		if providerAuthHeaderWorks(p) {
-			t.Errorf("URL: %s not found in list", p)
-		}
-		p := fmt.Sprintf("%ssomesuffix", p)
-		if providerAuthHeaderWorks(p) {
-			t.Errorf("URL: %s not found in list", p)
-		}
-	}
-	p := "https://api.not-in-the-list-example.com/"
-	if !providerAuthHeaderWorks(p) {
-		t.Errorf("URL: %s found in list", p)
-	}
-
 }
