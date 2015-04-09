@@ -63,8 +63,11 @@ type TokenSource interface {
 // Endpoint contains the OAuth 2.0 provider's authorization and token
 // endpoint URLs.
 type Endpoint struct {
-	AuthURL          string
-	TokenURL         string
+	AuthURL  string
+	TokenURL string
+	// BrokenAuthHeader signals a particular common server irregularity when retrieving tokens.
+	// If this is set then the client secret is send as a client_secret parameter on the POST
+	// and basic auth is not used.
 	BrokenAuthHeader bool
 }
 
