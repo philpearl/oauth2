@@ -408,6 +408,11 @@ func (e *expirationTime) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
+
+	if n.String() == "" {
+		*e = expirationTime(0)
+		return nil
+	}
 	i, err := n.Int64()
 	if err != nil {
 		return err
